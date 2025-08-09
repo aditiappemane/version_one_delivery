@@ -18,4 +18,4 @@ class Restaurant(Base):
     opening_time = Column(Time, nullable=True)
     closing_time = Column(Time, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=True, default=func.now(), onupdate=func.now())

@@ -1,6 +1,7 @@
 from typing import Optional, Annotated
 from datetime import time, datetime
 from pydantic import BaseModel, Field, StringConstraints, condecimal
+from typing import Optional
 
 # Common base schema for restaurant fields
 class RestaurantBase(BaseModel):
@@ -16,6 +17,7 @@ class RestaurantBase(BaseModel):
     is_active: bool = True
     opening_time: time
     closing_time: time
+    updated_at: Optional[datetime] = None
 
 
 # Schema for creating a restaurant
@@ -42,7 +44,7 @@ class RestaurantUpdate(BaseModel):
 class RestaurantInDBBase(RestaurantBase):
     id: int
     created_at: datetime
-    updated_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True  # For ORM mode in Pydantic v2

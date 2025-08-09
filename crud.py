@@ -7,7 +7,8 @@ from fastapi import HTTPException
 from . import models, schemas
 
 async def create_restaurant(db: AsyncSession, restaurant: schemas.RestaurantCreate):
-    new_restaurant = models.Restaurant(**restaurant.dict())
+    data = restaurant.dict(exclude={"updated_at", "created_at", "id"})
+    new_restaurant = models.Restaurant(**data)
     db.add(new_restaurant)
     try:
         await db.commit()
@@ -16,6 +17,7 @@ async def create_restaurant(db: AsyncSession, restaurant: schemas.RestaurantCrea
         await db.rollback()
         raise HTTPException(status_code=400, detail="Restaurant name already exists")
     return new_restaurant
+
 
 async def get_restaurants(db: AsyncSession, skip: int = 0, limit: int = 10):
     result = await db.execute(select(models.Restaurant).offset(skip).limit(limit))
